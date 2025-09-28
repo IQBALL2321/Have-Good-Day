@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinta Interaktif - Halaman Romantis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animasi background */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(45deg);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -10px;
+            top: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Kartu cinta */
+        .love-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .love-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .love-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .love-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,182,193,0.3) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .love-card:hover::before {
+            transform: scale(1);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .card-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Form pesan cinta */
+        .love-message-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #764ba2;
+            font-weight: bold;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Pesan yang ditampilkan */
+        .messages-container {
+            margin-top: 30px;
+        }
+
+        .message-item {
+            background: #f8f9fa;
+            border-left: 4px solid #764ba2;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message-author {
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+
+        .message-content {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Hati besar interaktif */
+        .big-heart {
+            text-align: center;
+            margin: 50px 0;
+            cursor: pointer;
+        }
+
+        .heart-svg {
+            width: 150px;
+            height: 150px;
+            fill: #ff6b6b;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 5px 15px rgba(255, 107, 107, 0.4));
+        }
+
+        .heart-svg:hover {
+            transform: scale(1.2);
+            fill: #ff5252;
+        }
+
+        .heart-svg:active {
+            transform: scale(0.9);
+        }
+
+        /* Counter love */
+        .love-counter {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            margin: 30px 0;
+        }
+
+        .counter-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .love-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .love-message-section {
+                padding: 20px;
+            }
+        }
+
+        /* Modal untuk pesan */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animasi background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header>
+        <h1>💕 Cinta Itu Indah 💕</h1>
+        <p class="subtitle">Ungkapkan cinta yang kamu sukai</p>
+    </header>
+
+    <!-- Container utama -->
+    <div class="container">
+        <!-- Kartu cinta -->
+        <section class="love-cards">
+            <div class="love-card" onclick="showCardMessage('Kasih Sayang')">
+                <span class="card-icon">💖</span>
+                <h3 class="card-title">Kasih Sayang</h3>
+                <p class="card-description">Kasih sayang adalah fondasi dari setiap hubungan yang kuat dan abadi.</p>
+            </div>
+            
+            <div class="love-card" onclick="showCardMessage('Persahabatan')">
+                <span class="card-icon">👫</span>
+                <h3 class="card-title">Persahabatan</h3>
+                <p class="card-description">Persahabatan sejati adalah cinta yang tumbuh bersama waktu.</p>
+            </div>
+            
+            <div class="love-card" onclick="showCardMessage('Keluarga')">
+                <span class="card-icon">👨‍👩‍👧‍👦</span>
+                <h3 class="card-title">Keluarga</h3>
+                <p class="card-description">Cinta keluarga adalah cinta pertama yang kita kenal dan yang terakhir kita tinggalkan.</p>
+            </div>
+        </section>
+
+        <!-- Form pesan cinta -->
+        <section class="love-message-section">
+            <h2 style="text-align: center; color: #764ba2; margin-bottom: 30px;">Tulis Pesan Cintamu</h2>
+            <form id="loveForm">
+                <div class="form-group">
+                    <label for="name">Nama Kamu:</label>
+                    <input type="text" id="name" name="name" required placeholder="Masukkan namamu">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Pesan Cinta:</label>
+                    <textarea id="message" name="message" required placeholder="Tulis pesan cinta yang ingin kamu sampaikan..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Kirim Pesan Cinta 💝</button>
+            </form>
+            
+            <div class="messages-container" id="messagesContainer"></div>
+        </section>
+
+        <!-- Hati besar interaktif -->
+        <section class="big-heart">
+            <svg class="heart-svg" viewBox="0 0 24 24" onclick="heartClick()">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        </section>
+
+        <!-- Counter love -->
+        <div class="love-counter">
+            <p>Hati yang telah diklik: <span class="counter-number" id="heartCounter">0</span> 💕</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Dibuat dengan 💛 untuk semua yang sedang merasakan cinta</p>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        // Counter untuk hati
+        let heartCount = 0;
+        const heartCounter = document.getElementById('heartCounter');
+
+        // Fungsi untuk membuat animasi hati di background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = Math.random() * 3 + 5 + 's';
+            heart.style.opacity = Math.random();
+            document.getElementById('bgAnimation').appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 8000);
+        }
+
+        // Buat hati setiap 2 detik
+        setInterval(createHeart, 2000);
+
+        // Fungsi untuk klik hati
+        function heartClick() {
+            heartCount++;
+            heartCounter.textContent = heartCount;
+            
+            // Animasi counter
+            heartCounter.style.transform = 'scale(1.5)';
+            setTimeout(() => {
+                heartCounter.style.transform = 'scale(1)';
+            }, 300);
+
+            // Buat efek hati kecil
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+        }
+
+        // Fungsi untuk menampilkan pesan dari kartu
+        function showCardMessage(title) {
+            const messages = {
+                'Kasih Sayang': 'Kasih sayang adalah cahaya yang menerangi kegelapan, memberi kehangatan di tengah dinginnya dunia.',
+                'Persahabatan': 'Persahabatan adalah satu jiwa dalam dua tubuh, sebuah ikatan yang tak bisa dipisahkan oleh waktu dan jarak.',
+                'Keluarga': 'Keluarga adalah pelabuhan pertama dan terakhir, tempat kita selalu pulang dengan cinta.'
+            };
+
+            showModal(title, messages[title]);
+        }
+
+        // Fungsi untuk menampilkan modal
+        function showModal(title, message) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Tutup modal saat klik di luar
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('loveForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            
+            // Buat elemen pesan baru
+            const messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            messageItem.innerHTML = `
+                <div class="message-author">Dari: ${name}</div>
+                <div class="message-content">${message}</div>
+            `;
+            
+            // Tambahkan ke container
+            const container = document.getElementById('messagesContainer');
+            container.insertBefore(messageItem, container.firstChild);
+            
+            // Reset form
+            this.reset();
+            
+            // Tampilkan notifikasi
+            showModal('Terima Kasih! 💕', `Terima kasih ${name}, pesan cintamu telah terkirim dengan penuh kasih!`);
+        });
+
+        // Animasi tambahan untuk elemen saat scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Terapkan observer ke kartu
+        document.querySelectorAll('.love-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
